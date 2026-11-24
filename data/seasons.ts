@@ -1,0 +1,433 @@
+import { Season } from "@/types/season";
+
+export const seasons: Season[] = [
+  {
+    slug: "season-1",
+    number: 1,
+    title: "Paav Tournament Season 1",
+    subtitle: "January 2025 | The Inaugural Valorant Showdown",
+    shortDescription:
+      "The tournament that started it all — exclusively for Paav Gang (Silver) members, culminating in a fierce grand final on January 12, 2025.",
+    description:
+      "The origin of Paav Esports! Season 1 invited Paav Gang and YouTube members into the ultimate Valorant showdown. Bringing together community players across diverse ranks, Season 1 tested adaptability, teamwork, and tactical execution. With a flurry of bangers in the finals, Team D conquered the bracket to be crowned the inaugural champions.",
+    status: "completed",
+    statusLabel: "Inaugural Champions",
+    bannerGradient: "from-red-950/80 via-black to-zinc-950",
+    accentColor: "#ef4444",
+    format: "Community Valorant Showdown • Group Stage & Single Elimination Finals",
+    gameTitle: "Valorant",
+    datesText: "Concluded 12 January 2025",
+    prizePoolText: "Paav Gang Bragging Rights & Exclusive Champion Role",
+    highlights: [
+      "The very first official Paav Gang Valorant tournament",
+      "High-stakes playoffs culminating in an electric finals series on January 12, 2025",
+      "Team D crowned as the inaugural Paav champions",
+      "Established the core community format and live Discord casting tradition",
+    ],
+    winners: [
+      {
+        place: "Champions",
+        team: "Team D",
+        player: "Roster Alpha",
+        note: "Inaugural Paav Tournament Champions (Concluded Jan 12, 2025)",
+        isConfirmed: true,
+      },
+    ],
+    teams: [
+      { name: "Team D", tag: "TMD", standing: "Champions" },
+      { name: "Team A", tag: "TMA", standing: "Finalists" },
+      { name: "Team B", tag: "TMB", standing: "Semifinalists" },
+      { name: "Team C", tag: "TMC", standing: "Semifinalists" },
+    ],
+    gallery: [
+      {
+        id: "s1-1",
+        title: "Season 1 Finals Wrapping Up",
+        category: "Award Ceremony",
+        caption: "Congratulations to Team D for an outstanding run through the entire tournament.",
+        placeholderColor: "bg-red-950/40",
+      },
+      {
+        id: "s1-2",
+        title: "Opening Bracket Clashes",
+        category: "Match Action",
+        caption: "First official rounds of the Paav Gang Valorant Showdown.",
+        placeholderColor: "bg-zinc-900",
+      },
+    ],
+    stats: [
+      { label: "Game Title", value: "Valorant" },
+      { label: "Community", value: "Paav Gang" },
+      { label: "Tournament Era", value: "January 2025" },
+      { label: "Champion", value: "Team D" },
+    ],
+    rulebookSummary: [
+      "Must be an active Paav Gang or YouTube Member.",
+      "Standard competitive Valorant rulebook and overtime rules.",
+      "Conducted in Discord Paav VC with community referee oversight.",
+    ],
+    officialLinks: {
+      googleFormUrl: "https://forms.gle/sghydWFV9sDkdV5Q9",
+    },
+    eligibilityRequirements: [
+      "Paav Gang Member (or YouTube Membership)",
+      "Active Valorant account in good standing",
+      "Discord voice channel participation",
+    ],
+  },
+  {
+    slug: "season-2",
+    number: 2,
+    title: "Paav ESports FaceOff - Season 2",
+    subtitle: "March – May 2025 | 10k Prize Pool & Rebalancing Algorithm",
+    shortDescription:
+      "Featured a ₹10,000 prize pool, custom team rebalancing algorithm, BO5 Lower Bracket & Grand Finals, and Pallu ke Lallu crowning.",
+    description:
+      "Season 2 expanded the competitive ceiling with a ₹10,000 INR prize pool, a custom team rebalancing algorithm for balanced squads, and weekend scheduling (Saturday & Sunday evenings). All matches were streamed live on the Discord server in Paav VC with community commentary, while the Lower Bracket Finals and Grand Finals were streamed on the main channel as Best-of-Five (BO5) series with map elimination. Team 5 - Pallu ke Lallu was officially crowned champion on May 25, 2025!",
+    status: "completed",
+    statusLabel: "Concluded (May 2025)",
+    bannerGradient: "from-amber-950/80 via-black to-zinc-950",
+    accentColor: "#f59e0b",
+    format: "Random-n-Balanced Teams • BO1 Regular Matches • BO5 Lower Bracket Finals & Grand Finals with Map Elimination",
+    gameTitle: "Valorant",
+    datesText: "29 March 2025 – 25 May 2025",
+    prizePoolText: "₹10,000 INR Prize Pool (Split among 5/6 players)",
+    highlights: [
+      "₹10,000 INR prize pool split between team players",
+      "Deployment of custom team rebalancing algorithm based on player ranks",
+      "Lower Bracket Finals and Grand Finals conducted as BO5 with map vetoes",
+      "Main channel and Discord Paav VC live stream broadcasts with caster commentary",
+      "Special mention: Goateed Brimstone player on Team 4 for iconic smoke plays",
+      "Team 5 (Pallu ke Lallu) crowned champions on May 25, 2025",
+    ],
+    winners: [
+      {
+        place: "Champions",
+        team: "Team 5 - Pallu ke Lallu",
+        player: "Pallu ke Lallu Roster",
+        note: "Officially crowned Season 2 Champions on May 25, 2025",
+        isConfirmed: true,
+      },
+      {
+        place: "Honorable Mention",
+        team: "Team 4",
+        player: "Goateed Brimstone Player",
+        note: "Celebrated for iconic smoke setups and round-winning clutches",
+        isConfirmed: true,
+      },
+    ],
+    teams: [
+      { name: "Team 5 - Pallu ke Lallu", tag: "T5", standing: "Champions" },
+      { name: "Team 4", tag: "T4", standing: "Playoffs & Mention" },
+      { name: "Team 1", tag: "T1", standing: "Contenders" },
+      { name: "Team 2", tag: "T2", standing: "Contenders" },
+      { name: "Team 3", tag: "T3", standing: "Contenders" },
+    ],
+    gallery: [
+      {
+        id: "s2-1",
+        title: "Pallu ke Lallu Coronation",
+        category: "Award Ceremony",
+        caption: "Huge congratulations to Team 5 - Pallu ke Lallu for wrapping up Season 2 as champions!",
+        placeholderColor: "bg-amber-950/40",
+      },
+      {
+        id: "s2-2",
+        title: "Goateed Brimstone Highlights",
+        category: "Match Action",
+        caption: "Team 4 Brimstone pulling off masterclass site executions.",
+        placeholderColor: "bg-zinc-900",
+      },
+    ],
+    stats: [
+      { label: "Prize Pool", value: "₹10,000 INR" },
+      { label: "Min Rank", value: "Bronze" },
+      { label: "Match Days", value: "Weekends (Sat/Sun)" },
+      { label: "Champion", value: "Pallu ke Lallu" },
+    ],
+    rulebookSummary: [
+      "Eligibility: Paav Member or YouTube Membership. Minimum rank: Bronze.",
+      "Matches scheduled on weekends (weekday slots reserved only for postponed series).",
+      "Lower Bracket Finals and Grand Finals: Best of 5 with map elimination.",
+      "Teams formulated with the proprietary Paav team rebalancing algorithm.",
+    ],
+    officialLinks: {
+      googleFormUrl: "https://forms.gle/XMZKp4tYqqwNQ4WA8",
+    },
+    eligibilityRequirements: [
+      "Must be a Paav Member (or have active YouTube Membership)",
+      "Minimum Valorant Rank: Bronze",
+      "Available on weekend evenings (Saturday & Sunday)",
+    ],
+  },
+  {
+    slug: "season-3",
+    number: 3,
+    title: "Paav ESports Season 3: Valorant Showdown",
+    subtitle: "July – October 2025 | The Historic 18-20 Marathon Overtime",
+    shortDescription:
+      "Solo-queue only tournament featuring the greatest lower bracket comeback in Valorant history: Team OG Irons' 18-20 overtime miracle.",
+    description:
+      "Season 3 was an adrenaline rush. Running under the motto 'Sweat, frag, repeat', it was a solo-queue-only tournament where every participant registered individually and squads were randomized and balanced. The season culminated in legendary drama: in the Lower Bracket Finals, Team OG Irons were down 0-2 against Team Forza, forced Map 5, and won in an astounding 18-20 marathon overtime! In the Grand Finals, Team OG Irons shattered the undefeated streak of Team Mystic to win 3-1 and seize the championship!",
+    status: "completed",
+    statusLabel: "Concluded (Oct 2025)",
+    bannerGradient: "from-blue-950/80 via-black to-zinc-950",
+    accentColor: "#3b82f6",
+    format: "Solo-Queue Only • Randomized & Balanced Rosters • Double Elimination",
+    gameTitle: "Valorant",
+    datesText: "30 July 2025 – 29 October 2025",
+    prizePoolText: "Prize Split between Finalist Squad",
+    highlights: [
+      "Solo-queue only tournament: teams formulated with rank-balanced draft",
+      "Legendary Lower Bracket Final: Team OG Irons down 0-2 against Team Forza, battling back to win Map 5 in an 18-20 marathon overtime",
+      "Grand Finals upset: Team OG Irons took down the undefeated Team Mystic 3-1",
+      "Regarded as one of the greatest competitive comebacks in community Valorant history",
+      "Full Discord VC coverage with casters and passionate community viewership",
+    ],
+    winners: [
+      {
+        place: "Champions",
+        team: "Team OG IRONS",
+        note: "Defeated undefeated Team Mystic 3-1 after historic lower bracket miracle run",
+        isConfirmed: true,
+      },
+      {
+        place: "Runner-Up",
+        team: "Team Mystic",
+        note: "Dominant undefeated run all the way to the Grand Finals",
+        isConfirmed: true,
+      },
+      {
+        place: "3rd Place / Top Competitor",
+        team: "Team Forza",
+        note: "Battled Team OG Irons in the historic 18-20 overtime Lower Bracket Final",
+        isConfirmed: true,
+      },
+    ],
+    teams: [
+      { name: "Team OG IRONS", tag: "OGI", standing: "Champions (3-1 GF)" },
+      { name: "Team Mystic", tag: "MYS", standing: "Runners-Up (Undefeated till GF)" },
+      { name: "Team Forza", tag: "FRZ", standing: "3rd Place (18-20 OT LBF)" },
+    ],
+    gallery: [
+      {
+        id: "s3-1",
+        title: "The 18-20 Marathon Overtime",
+        category: "Match Action",
+        caption: "Team OG Irons and Team Forza going head-to-head in round 38 of Map 5.",
+        placeholderColor: "bg-blue-950/40",
+      },
+      {
+        id: "s3-2",
+        title: "Team OG Irons Trophy Lift",
+        category: "Award Ceremony",
+        caption: "Put your hands together for the new champions — Team OG IRONS!",
+        placeholderColor: "bg-zinc-900",
+      },
+    ],
+    stats: [
+      { label: "Tournament Era", value: "July – Oct 2025" },
+      { label: "Historic Overtime", value: "18 - 20 (Map 5)" },
+      { label: "Champion", value: "Team OG IRONS" },
+      { label: "Runner-Up", value: "Team Mystic" },
+    ],
+    rulebookSummary: [
+      "Solo entries only — no pre-mades permitted.",
+      "Minimum Rank: Bronze. Paav Member or YouTube Membership required.",
+      "Double elimination playoff bracket with map vetoes.",
+      "Matches hosted on weekends between Saturday evening and Sunday evening.",
+    ],
+    officialLinks: {
+      googleFormUrl: "https://forms.gle/sLnfsZspe8TkAsXRA",
+    },
+    eligibilityRequirements: [
+      "Paav Member (or active YouTube Membership)",
+      "Minimum Rank: Bronze",
+      "Solo entries only — no pre-mades",
+    ],
+  },
+  {
+    slug: "season-4",
+    number: 4,
+    title: "Paav ESports Season IV: Valorant Showdown",
+    subtitle: "October 2025 – January 2026 | Lower Bracket Miracle by Team NinniBoyz",
+    shortDescription:
+      "Silver 1+ minimum rank, 5 weeks of high-octane play, 95% matches archived on YouTube, and Team NinniBoyz hoisting the trophy.",
+    description:
+      "Season 4 raised the rank requirement to Silver 1 and ran a grueling 5-week tournament circuit across weekday evenings (after 6pm) and weekends (after 1pm). Almost 95% of tournament matches were broadcast, recorded, and archived on the official YouTube playlist. In the Grand Finals hosted live on stream, Team NinniBoyz capped off an incredible lower bracket resurgence by dethroning the previously undefeated Team Freeze! Special gratitude was extended to Shibuuu for tournament operations, and PIROEDITOR for the viral cinematic edit.",
+    status: "completed",
+    statusLabel: "Concluded (Jan 2026)",
+    bannerGradient: "from-purple-950/80 via-black to-zinc-950",
+    accentColor: "#a855f7",
+    format: "Solo-Queue Random-n-Balanced Teams • 5-Week Circuit • Double Elimination",
+    gameTitle: "Valorant",
+    datesText: "31 October 2025 – 17 January 2026",
+    prizePoolText: "Prize Split between 5 Winning Players",
+    highlights: [
+      "Minimum rank requirement elevated to Silver 1 for heightened competitive parity",
+      "Almost 95% of tournament matches recorded on the official YouTube playlist",
+      "Grand Finals hosted live on stream: Team NinniBoyz defeated the undefeated Team Freeze",
+      "Dedicated operational support by Shibuuu and admin staff",
+      "Cinematic tournament aftermovie created by PIROEDITOR (2x RunnerUp PE)",
+    ],
+    winners: [
+      {
+        place: "Champions",
+        team: "Team NinniBoyz",
+        note: "Completed lower bracket run to defeat undefeated Team Freeze in Grand Finals",
+        isConfirmed: true,
+      },
+      {
+        place: "Runner-Up",
+        team: "Team Freeze",
+        note: "Dominant undefeated run straight to the live Grand Finals",
+        isConfirmed: true,
+      },
+      {
+        place: "Special Honors",
+        team: "Community Staff",
+        player: "Shibuuu & PIROEDITOR",
+        note: "Shibuuu for administrative coordination & PIROEDITOR for the official tournament edit",
+        isConfirmed: true,
+      },
+    ],
+    teams: [
+      { name: "Team NinniBoyz", tag: "NNB", standing: "Champions" },
+      { name: "Team Freeze", tag: "FRZ", standing: "Runners-Up (Undefeated till GF)" },
+    ],
+    gallery: [
+      {
+        id: "s4-1",
+        title: "Official YouTube Match Archive",
+        category: "Behind the Scenes",
+        caption: "Almost 95% of Season 4 matches archived on the official Paav Esports playlist.",
+        placeholderColor: "bg-purple-950/40",
+      },
+      {
+        id: "s4-2",
+        title: "Season 4 Edit by PIROEDITOR",
+        category: "Community Edit",
+        caption: "Cinematic highlight reel edited by PIROEDITOR (2x RunnerUp PE).",
+        placeholderColor: "bg-zinc-900",
+      },
+      {
+        id: "s4-3",
+        title: "Team NinniBoyz Victory",
+        category: "Award Ceremony",
+        caption: "Celebrating Team NinniBoyz as the official Season 4 Champions!",
+        placeholderColor: "bg-purple-900/30",
+      },
+    ],
+    stats: [
+      { label: "Circuit Duration", value: "5 Weeks" },
+      { label: "Min Rank", value: "Silver 1" },
+      { label: "Matches Archived", value: "~95% on YouTube" },
+      { label: "Champion", value: "Team NinniBoyz" },
+    ],
+    rulebookSummary: [
+      "Eligibility: Must be at least Silver 1 in Valorant, active Paav or YouTube Member, and possess a chill mindset.",
+      "Matches held on weekdays after 6pm and weekends after 1pm.",
+      "Random-and-balanced teams drafted with custom balancing algorithm.",
+      "Prize split among the 5 players on the winning squad.",
+    ],
+    officialLinks: {
+      googleFormUrl: "https://forms.gle/yAbLnyAa6jPvg38S9",
+      youtubePlaylistUrl: "https://www.youtube.com/playlist?list=PLlEbqFFrLm_O1z7rUMBPX9dPShpKg5Eau",
+      driveEditUrl: "https://drive.google.com/file/d/1Iv_6x7Q9WJTM3VL0TLNG-HmYgRoz4jig/view?usp=sharing",
+    },
+    eligibilityRequirements: [
+      "Must be a Paav Member (or have active YouTube Membership)",
+      "Minimum Rank: Silver 1",
+      "Have a chill mindset for community gameplay",
+      "Available weekdays after 6pm and weekends after 1pm",
+    ],
+  },
+  {
+    slug: "season-5",
+    number: 5,
+    title: "Paav ESports FaceOff - Season 5",
+    subtitle: "March 2026 | Elite Community Valorant Showdown",
+    shortDescription:
+      "The newest chapter exclusively for Paav Gang members, backed by an official tournament overview doc and strategic rank balancing.",
+    description:
+      "Announced in March 2026 by Elitex [K/D] and the Paav committee, Season 5 is designed to showcase elite skills, strategic mastery, and team synergy within the community. Backed by an official Google Docs tournament overview and comprehensive Google Form registrations, Season 5 features random-and-balanced teams formulated based on rank distribution, delivering competitive parity across every weekend series.",
+    status: "completed",
+    statusLabel: "Latest Concluded FaceOff",
+    bannerGradient: "from-emerald-950/80 via-black to-zinc-950",
+    accentColor: "#10b981",
+    format: "Paav Gang Members FaceOff • Random-n-Balanced Teams • Tournament Doc Guided",
+    gameTitle: "Valorant",
+    datesText: "Announced March 2026",
+    prizePoolText: "Prize Pool & Exclusive Champion Role",
+    highlights: [
+      "Official tournament overview document published for participants",
+      "Exclusively for Paav Gang and YouTube Membership holders",
+      "Organized into random-and-balanced squads based on rank distribution",
+      "Community video editing contributions by PIROEDITOR",
+      "Live tournament broadcasts and voice channels on Discord",
+    ],
+    winners: [
+      {
+        place: "Latest FaceOff",
+        team: "Paav FaceOff Roster",
+        note: "Official Season 5 competition launched via Paav Docs & Forms",
+        isConfirmed: true,
+      },
+    ],
+    teams: [
+      { name: "Balanced Squad Alpha", tag: "BSA", standing: "Active FaceOff" },
+      { name: "Balanced Squad Bravo", tag: "BSB", standing: "Active FaceOff" },
+    ],
+    gallery: [
+      {
+        id: "s5-1",
+        title: "Season 5 Official Overview",
+        category: "Behind the Scenes",
+        caption: "Official Paav ESports FaceOff: Season 5 Google Docs Tournament Guide.",
+        placeholderColor: "bg-emerald-950/40",
+      },
+      {
+        id: "s5-2",
+        title: "Paav Gang Registrations",
+        category: "Match Action",
+        caption: "Exclusive registration drive for Paav Gang members.",
+        placeholderColor: "bg-zinc-900",
+      },
+    ],
+    stats: [
+      { label: "Community", value: "Paav Gang" },
+      { label: "Status", value: "Season 5 FaceOff" },
+      { label: "Rules Guide", value: "Official Google Doc" },
+      { label: "Game Title", value: "Valorant" },
+    ],
+    rulebookSummary: [
+      "Exclusively for Paav Gang Members (or YouTube Membership).",
+      "Participants balanced into teams based on rank and agent roles.",
+      "Full compliance with the Season 5 tournament overview document.",
+    ],
+    officialLinks: {
+      googleFormUrl: "https://forms.gle/cEDeXfMvBUamKHcf9",
+      googleDocUrl: "https://docs.google.com/document/d/1_d_pHS4u1ACnxP0YNTtC0iI3NFAvxZpASPatjWJavtQ/edit?usp=sharing",
+    },
+    eligibilityRequirements: [
+      "Exclusively for Paav Gang Members (or active YouTube Membership)",
+      "Accurate submission via official Season 5 Google Form",
+      "Strategic mastery & teamwork mindset",
+    ],
+  },
+];
+
+export const UPCOMING_SEASON_PREVIEW = {
+  number: 6,
+  title: "Paav ESports FaceOff - Season 6",
+  subtitle: "Valorant Community Showdown // Registrations Open",
+  status: "upcoming" as const,
+  statusLabel: "Upcoming Showdown",
+  tagline: "Sweat, frag, repeat. Your clutch moment awaits.",
+  shortDescription:
+    "Paav Esports returns for Season 6! Showcase your Valorant skills in our ultimate community showdown. Open for Paav Gang and YouTube members with random-and-balanced teams. Good luck, and may the best team win!",
+  slotCount: "Limited Slots (First Come, First Served)",
+  registrationStatus: "Open for Paav Gang Members",
+  disclaimer:
+    "Note: This frontend demo validates player credentials, rank, and agent roles. Backend database synchronization will be activated for the tournament launch.",
+};
