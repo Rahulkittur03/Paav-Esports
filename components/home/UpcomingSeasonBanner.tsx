@@ -35,7 +35,7 @@ export default function UpcomingSeasonBanner() {
                     <span className="block text-[10px] font-mono uppercase text-zinc-500">
                       Format
                     </span>
-                    <span className="text-xs font-bold text-white">16-Team Masters</span>
+                    <span className="text-xs font-bold text-white">Balanced Teams</span>
                   </div>
                 </div>
 
@@ -43,9 +43,9 @@ export default function UpcomingSeasonBanner() {
                   <Users className="h-5 w-5 text-red-500 shrink-0" />
                   <div>
                     <span className="block text-[10px] font-mono uppercase text-zinc-500">
-                      Roster Size
+                      Eligibility
                     </span>
-                    <span className="text-xs font-bold text-white">5 Starters + 1 Sub</span>
+                    <span className="text-xs font-bold text-white">Paav Gang (Silver)</span>
                   </div>
                 </div>
 
@@ -53,9 +53,9 @@ export default function UpcomingSeasonBanner() {
                   <CheckCircle2 className="h-5 w-5 text-emerald-400 shrink-0" />
                   <div>
                     <span className="block text-[10px] font-mono uppercase text-zinc-500">
-                      Anti-Cheat
+                      Schedule
                     </span>
-                    <span className="text-xs font-bold text-white">Mandatory Audit</span>
+                    <span className="text-xs font-bold text-white">Weekend Evenings</span>
                   </div>
                 </div>
               </div>

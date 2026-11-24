@@ -15,7 +15,6 @@ import {
   Crosshair,
   Award,
   ExternalLink,
-  Youtube,
   FileText,
   Video,
 } from "lucide-react";
@@ -293,6 +292,97 @@ export default function SeasonDetailClient({ season }: SeasonDetailClientProps) 
                 <span>Verified by PAAV Tournament Committee</span>
               </div>
             </div>
+
+            {/* Eligibility & Lowdown */}
+            {season.eligibilityRequirements && (
+              <div className="rounded-2xl border border-white/10 bg-[#0d0d11] p-6 space-y-4">
+                <div className="flex items-center gap-2">
+                  <ShieldCheck className="h-5 w-5 text-red-500" />
+                  <h3 className="text-sm font-mono font-bold uppercase tracking-wider text-white">
+                    The Lowdown // Eligibility
+                  </h3>
+                </div>
+                <ul className="space-y-2">
+                  {season.eligibilityRequirements.map((req, idx) => (
+                    <li key={idx} className="flex items-start gap-2.5 text-xs text-zinc-300">
+                      <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0 mt-0.5" />
+                      <span>{req}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {/* Official Archive Links */}
+            {season.officialLinks && (
+              <div className="rounded-2xl border border-white/10 bg-[#0e0e12] p-6 space-y-4">
+                <h3 className="text-sm font-mono font-bold uppercase tracking-wider text-white flex items-center justify-between">
+                  <span>Official Archive Links</span>
+                  <ExternalLink className="h-4 w-4 text-zinc-500" />
+                </h3>
+                <div className="space-y-2">
+                  {season.officialLinks.youtubePlaylistUrl && (
+                    <a
+                      href={season.officialLinks.youtubePlaylistUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-3 rounded-xl bg-red-600/10 border border-red-500/20 hover:border-red-500/50 hover:bg-red-600/20 transition-all flex items-center justify-between group"
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <Video className="h-4 w-4 text-red-500" />
+                        <span className="text-xs font-bold text-white">YouTube Match Playlist</span>
+                      </div>
+                      <ExternalLink className="h-3.5 w-3.5 text-zinc-400 group-hover:text-white" />
+                    </a>
+                  )}
+
+                  {season.officialLinks.googleDocUrl && (
+                    <a
+                      href={season.officialLinks.googleDocUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-3 rounded-xl bg-blue-600/10 border border-blue-500/20 hover:border-blue-500/50 hover:bg-blue-600/20 transition-all flex items-center justify-between group"
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <FileText className="h-4 w-4 text-blue-400" />
+                        <span className="text-xs font-bold text-white">Tournament Overview Doc</span>
+                      </div>
+                      <ExternalLink className="h-3.5 w-3.5 text-zinc-400 group-hover:text-white" />
+                    </a>
+                  )}
+
+                  {season.officialLinks.driveEditUrl && (
+                    <a
+                      href={season.officialLinks.driveEditUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-3 rounded-xl bg-purple-600/10 border border-purple-500/20 hover:border-purple-500/50 hover:bg-purple-600/20 transition-all flex items-center justify-between group"
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <Video className="h-4 w-4 text-purple-400" />
+                        <span className="text-xs font-bold text-white">Cinematic Edit (PIROEDITOR)</span>
+                      </div>
+                      <ExternalLink className="h-3.5 w-3.5 text-zinc-400 group-hover:text-white" />
+                    </a>
+                  )}
+
+                  {season.officialLinks.googleFormUrl && (
+                    <a
+                      href={season.officialLinks.googleFormUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-3 rounded-xl bg-white/5 border border-white/10 hover:border-white/20 hover:bg-white/10 transition-all flex items-center justify-between group"
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <ExternalLink className="h-4 w-4 text-zinc-400" />
+                        <span className="text-xs font-medium text-zinc-300">Archived Google Form</span>
+                      </div>
+                      <span className="text-[10px] font-mono text-zinc-500">View Form</span>
+                    </a>
+                  )}
+                </div>
+              </div>
+            )}
 
             {/* Next Season Registration Teaser */}
             <div className="rounded-2xl border border-red-500/30 bg-red-950/20 p-6 space-y-4">

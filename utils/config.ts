@@ -17,6 +17,7 @@ export const SITE_CONFIG = {
     discord: "https://discord.gg/paav",
     youtube: "https://www.youtube.com/playlist?list=PLlEbqFFrLm_O1z7rUMBPX9dPShpKg5Eau",
     youtubePlaylistS4: "https://www.youtube.com/playlist?list=PLlEbqFFrLm_O1z7rUMBPX9dPShpKg5Eau",
+    twitter: "https://x.com/paavesports",
     s5Doc: "https://docs.google.com/document/d/1_d_pHS4u1ACnxP0YNTtC0iI3NFAvxZpASPatjWJavtQ/edit?usp=sharing",
     s5Form: "https://forms.gle/cEDeXfMvBUamKHcf9",
     s4EditDrive: "https://drive.google.com/file/d/1Iv_6x7Q9WJTM3VL0TLNG-HmYgRoz4jig/view?usp=sharing",

@@ -139,6 +139,33 @@ export default function AboutClient() {
           </div>
         </div>
 
+        {/* Leadership & Key Contributors */}
+        <div className="space-y-12">
+          <SectionHeader
+            tag="// TOURNAMENT OPERATIONS"
+            title="The Team Behind Paav Esports"
+            subtitle="Meet the organizers, hosts, admins, and creators who make every Paav tournament season happen."
+          />
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {ABOUT_PAAV.leadership.map((member, idx) => (
+              <div
+                key={idx}
+                className="p-6 rounded-2xl border border-white/10 bg-[#0d0d10] space-y-3 hover:border-red-500/40 transition-colors"
+              >
+                <div className="h-10 w-10 rounded-xl bg-red-600/20 border border-red-500/30 flex items-center justify-center font-mono font-bold text-red-400 text-sm">
+                  {member.name.substring(0, 2).toUpperCase()}
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-white">{member.name}</h3>
+                  <span className="text-xs font-mono text-red-400 block">{member.role}</span>
+                </div>
+                <p className="text-xs text-zinc-400 leading-relaxed">{member.bio}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* Community Hub & Social Links */}
         <div className="rounded-3xl border border-white/10 bg-[#0b0b0e] p-8 sm:p-12 space-y-8">
           <div className="space-y-3">

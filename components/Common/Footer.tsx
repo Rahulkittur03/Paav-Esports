@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { ArrowUpRight, ShieldCheck, Mail } from "lucide-react";
+import { ArrowUpRight, ShieldCheck, Video, MessageSquare } from "lucide-react";
 import { ROUTE_HOME, ROUTE_SEASONS, ROUTE_ABOUT, ROUTE_REGISTER, ROUTE_SEASON_DETAIL } from "@/utils/routes";
 import { SITE_CONFIG } from "@/utils/config";
 import { seasons } from "@/data/seasons";
@@ -112,9 +112,20 @@ export default function Footer() {
               </Link>
             </div>
 
-            <div className="pt-2 text-xs text-zinc-500 flex items-center gap-2">
-              <Mail className="h-3.5 w-3.5 text-zinc-400" />
-              <span>{SITE_CONFIG.contact.email}</span>
+            <div className="pt-2 text-xs text-zinc-500 flex flex-col gap-2">
+              <a
+                href={SITE_CONFIG.socials.youtubePlaylistS4}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-red-400 flex items-center gap-2 transition-colors"
+              >
+                <Video className="h-4 w-4 text-red-500" />
+                <span>YouTube Match Archive</span>
+              </a>
+              <div className="flex items-center gap-2">
+                <MessageSquare className="h-4 w-4 text-indigo-400" />
+                <span>Discord Paav VC Lobbies</span>
+              </div>
             </div>
           </div>
         </div>

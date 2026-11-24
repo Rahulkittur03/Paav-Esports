@@ -1,24 +1,31 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RegistrationFormData, RegistrationErrors, DemoSubmissionReceipt, RosterPlayer } from "@/types/registration";
+import {
+  RegistrationFormData,
+  RegistrationErrors,
+  DemoSubmissionReceipt,
+  RosterPlayer,
+} from "@/types/registration";
 
 const initialRoster: RosterPlayer[] = [
-  { id: "p1", fullName: "", inGameId: "", role: "Duelist / Fragger", isCaptain: true },
-  { id: "p2", fullName: "", inGameId: "", role: "Initiator / Flex" },
-  { id: "p3", fullName: "", inGameId: "", role: "Controller / Support" },
-  { id: "p4", fullName: "", inGameId: "", role: "Sentinel / Anchor" },
-  { id: "p5", fullName: "", inGameId: "", role: "Duelist / Fragger" },
-  { id: "p6", fullName: "", inGameId: "", role: "Substitute" },
+  { id: "p1", fullName: "", inGameId: "", currentRank: "Silver", role: "Duelist", isCaptain: true },
+  { id: "p2", fullName: "", inGameId: "", currentRank: "Silver", role: "Initiator" },
+  { id: "p3", fullName: "", inGameId: "", currentRank: "Silver", role: "Controller" },
+  { id: "p4", fullName: "", inGameId: "", currentRank: "Bronze", role: "Sentinel" },
+  { id: "p5", fullName: "", inGameId: "", currentRank: "Bronze", role: "Duelist" },
+  { id: "p6", fullName: "", inGameId: "", currentRank: "Bronze", role: "Substitute" },
 ];
 
 const initialFormData: RegistrationFormData = {
+  entryType: "team",
+  membershipType: "paav_gang_silver",
   teamName: "",
   teamTag: "",
   teamLeaderName: "",
   contactNumber: "",
   email: "",
   discordId: "",
-  gameDiscipline: "Tactical FPS League",
-  region: "South Asia / IN",
+  gameDiscipline: "Valorant (Paav Showdown)",
+  region: "India / South Asia (Mumbai Server)",
   agreedToRules: false,
   roster: initialRoster,
 };
@@ -45,7 +52,7 @@ export const registrationSlice = createSlice({
       state,
       action: PayloadAction<{ field: keyof Omit<RegistrationFormData, "roster">; value: string | boolean }>
     ) => {
-      // @ts-expect-error dynamic key assignment for string/boolean
+      // @ts-expect-error dynamic key assignment
       state.formData[action.payload.field] = action.payload.value;
       if (state.errors[action.payload.field]) {
         delete state.errors[action.payload.field];
@@ -71,12 +78,12 @@ export const registrationSlice = createSlice({
           id: `p${state.formData.roster.length + 1}`,
           fullName: "",
           inGameId: "",
+          currentRank: "Silver",
           role: "Substitute",
         });
       }
     },
     removeSubstitute: (state, action: PayloadAction<number>) => {
-      // Allow removing only players beyond the 5 core starters
       if (action.payload >= 5 && state.formData.roster.length > 5) {
         state.formData.roster.splice(action.payload, 1);
       }

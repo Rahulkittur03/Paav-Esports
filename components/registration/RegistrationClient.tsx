@@ -12,6 +12,8 @@ import {
   Trash2,
   Trophy,
   RotateCcw,
+  Sparkles,
+  User,
 } from "lucide-react";
 import Badge from "@/components/ui/Badge";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
@@ -25,32 +27,56 @@ import {
   submitDemoSuccess,
   resetRegistration,
 } from "@/features/registration/registrationSlice";
-import { RegistrationErrors, DemoSubmissionReceipt } from "@/types/registration";
+import { RegistrationErrors, DemoSubmissionReceipt, ValorantRank, AgentRole } from "@/types/registration";
 import { toast } from "sonner";
 import { ROUTE_HOME } from "@/utils/routes";
+
+const VALORANT_RANKS: ValorantRank[] = [
+  "Iron",
+  "Bronze",
+  "Silver",
+  "Gold",
+  "Platinum",
+  "Diamond",
+  "Ascendant",
+  "Immortal",
+  "Radiant",
+];
+
+const AGENT_ROLES: AgentRole[] = [
+  "Duelist",
+  "Initiator",
+  "Controller",
+  "Sentinel",
+  "Substitute",
+];
 
 export default function RegistrationClient() {
   const dispatch = useAppDispatch();
   const { formData, errors, status, receipt } = useAppSelector((state) => state.registration);
   const [showReceiptModal, setShowReceiptModal] = useState(false);
 
+  const isSolo = formData.entryType === "solo";
+
   const validateForm = (): boolean => {
     const errs: RegistrationErrors = {};
 
-    if (!formData.teamName.trim()) {
-      errs.teamName = "Team name is required.";
-    } else if (formData.teamName.length < 3) {
-      errs.teamName = "Team name must be at least 3 characters.";
-    }
+    if (!isSolo) {
+      if (!formData.teamName.trim()) {
+        errs.teamName = "Team name is required.";
+      } else if (formData.teamName.length < 3) {
+        errs.teamName = "Team name must be at least 3 characters.";
+      }
 
-    if (!formData.teamTag.trim()) {
-      errs.teamTag = "Team tag is required.";
-    } else if (formData.teamTag.length < 2 || formData.teamTag.length > 5) {
-      errs.teamTag = "Tag must be 2–5 characters.";
+      if (!formData.teamTag.trim()) {
+        errs.teamTag = "Team tag is required.";
+      } else if (formData.teamTag.length < 2 || formData.teamTag.length > 5) {
+        errs.teamTag = "Tag must be 2–5 characters.";
+      }
     }
 
     if (!formData.teamLeaderName.trim()) {
-      errs.teamLeaderName = "Team leader name is required.";
+      errs.teamLeaderName = isSolo ? "Player full name is required." : "Captain name is required.";
     }
 
     if (!formData.email.trim()) {
@@ -65,23 +91,38 @@ export default function RegistrationClient() {
       errs.contactNumber = "Please enter a valid phone number (at least 7 digits).";
     }
 
-    // Validate 5 starters
-    formData.roster.slice(0, 5).forEach((player, idx) => {
-      if (!player.fullName.trim()) {
-        errs[`roster_${idx}_fullName`] = `Player ${idx + 1} name is required.`;
+    if (!formData.discordId.trim()) {
+      errs.discordId = "Discord username is required for Paav VC match lobbies.";
+    }
+
+    if (isSolo) {
+      // Validate primary solo player in slot 0
+      const soloPlayer = formData.roster[0];
+      if (!soloPlayer?.fullName.trim()) {
+        errs["roster_0_fullName"] = "Full name is required.";
       }
-      if (!player.inGameId.trim()) {
-        errs[`roster_${idx}_inGameId`] = `Player ${idx + 1} IGN is required.`;
+      if (!soloPlayer?.inGameId.trim()) {
+        errs["roster_0_inGameId"] = "Valorant Riot ID & Tag (e.g. Agent#PAAV) is required.";
       }
-    });
+    } else {
+      // Validate all 5 starters
+      formData.roster.slice(0, 5).forEach((player, idx) => {
+        if (!player.fullName.trim()) {
+          errs[`roster_${idx}_fullName`] = `Player ${idx + 1} name is required.`;
+        }
+        if (!player.inGameId.trim()) {
+          errs[`roster_${idx}_inGameId`] = `Player ${idx + 1} Riot ID & Tag is required.`;
+        }
+      });
+    }
 
     if (!formData.agreedToRules) {
-      errs.agreedToRules = "You must accept the tournament regulations.";
+      errs.agreedToRules = "You must agree to the Paav Esports Tournament Regulations.";
     }
 
     if (Object.keys(errs).length > 0) {
       dispatch(setErrors(errs));
-      toast.error("Please correct the validation errors in the form.");
+      toast.error("Please fill in all required fields accurately.");
       return false;
     }
 
@@ -95,27 +136,28 @@ export default function RegistrationClient() {
 
     dispatch(submitDemoStart());
 
-    // Simulate brief client-side processing
     setTimeout(() => {
       const demoReceipt: DemoSubmissionReceipt = {
         registrationCode: `PAAV-S6-${Math.floor(100000 + Math.random() * 900000)}`,
         submittedAt: new Date().toLocaleString(),
-        teamName: formData.teamName,
-        teamTag: formData.teamTag.toUpperCase(),
+        entryType: formData.entryType,
+        membershipType: formData.membershipType,
+        teamName: isSolo ? `Solo Queue (${formData.teamLeaderName})` : formData.teamName,
+        teamTag: isSolo ? "SOLO" : formData.teamTag.toUpperCase(),
         teamLeaderName: formData.teamLeaderName,
         email: formData.email,
         contactNumber: formData.contactNumber,
-        discordId: formData.discordId || "Not Provided",
+        discordId: formData.discordId,
         gameDiscipline: formData.gameDiscipline,
-        roster: formData.roster,
+        roster: isSolo ? [formData.roster[0]] : formData.roster,
         status: "DEMO_VERIFIED",
         disclaimer:
-          "Frontend Demo Only: This simulation confirms client-side data schema validation. Official backend database synchronization will open prior to tournament kickoff.",
+          "Frontend Demo Only: Your registration schema has been validated. Official database persistence and match lobby assignments will open upon tournament kickoff in Discord Paav VC.",
       };
 
       dispatch(submitDemoSuccess(demoReceipt));
       setShowReceiptModal(true);
-      toast.success("Roster validated successfully! Check your demo receipt.");
+      toast.success("Registration validated successfully! Check your receipt.");
     }, 600);
   };
 
@@ -131,145 +173,178 @@ export default function RegistrationClient() {
         {/* Header */}
         <div className="space-y-4 text-center">
           <Badge variant="red" size="md">
-            Season 6 // Roster Recruitment
+            Paav ESports FaceOff - Season 6 // Valorant
           </Badge>
           <h1 className="text-4xl sm:text-5xl font-black uppercase tracking-tight text-white font-sans">
             Register for Season 6
           </h1>
           <p className="text-zinc-400 text-sm sm:text-base max-w-xl mx-auto">
-            Submit your squad for Season 6: The Next Vanguard. Provide your organization
-            credentials, team captain contact, and active competitive roster.
+            Exclusively for <strong className="text-white">Paav Gang (Silver)</strong> &{" "}
+            <strong className="text-white">YouTube Channel Members</strong>. Enter as a Solo Queue
+            agent (random-n-balanced teams) or register a full 5-player squad.
           </p>
         </div>
 
-        {/* Demo Notice Banner (Mandatory per Project Brief Section 5.5) */}
+        {/* Demo Notice Banner */}
         <div className="rounded-2xl border border-amber-500/40 bg-amber-500/10 p-5 flex items-start gap-4 text-amber-200">
           <ShieldAlert className="h-5 w-5 text-amber-400 shrink-0 mt-0.5" />
           <div className="space-y-1 text-xs">
             <strong className="block font-bold text-amber-300 uppercase tracking-wide">
-              Frontend-Only Demo Notice
+              Frontend Demo Notice
             </strong>
             <p className="text-amber-200/90 leading-relaxed">
-              This tournament portal is currently in its frontend preview release. Submitted team
-              and roster data undergoes full client-side schema validation and generates a
-              demo confirmation ticket. No backend, database, or live tournament API is connected.
+              This form verifies your Valorant Riot ID, rank, and Paav Gang membership criteria on
+              the client. Official tournament brackets, lobby pings, and scheduling are managed
+              directly in Discord Paav VC.
             </p>
           </div>
         </div>
 
         {/* Registration Form */}
         <form onSubmit={handleSubmit} className="space-y-10">
-          {/* Section 1: Team Credentials */}
+          {/* Section 0: Format & Membership Selectors */}
           <div className="rounded-2xl border border-white/10 bg-[#0e0e12] p-6 sm:p-8 space-y-6">
             <div className="flex items-center gap-2 border-b border-white/5 pb-4">
-              <Trophy className="h-5 w-5 text-red-500" />
+              <Sparkles className="h-5 w-5 text-red-500" />
               <h2 className="text-lg font-bold uppercase text-white font-sans tracking-wide">
-                1. Team Profile
+                1. Entry Type & Membership
               </h2>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-              {/* Team Name */}
-              <div className="sm:col-span-2 space-y-1.5">
-                <label className="block text-xs font-mono font-bold uppercase tracking-wider text-zinc-300">
-                  Team Name <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  value={formData.teamName}
-                  onChange={(e) =>
-                    dispatch(updateField({ field: "teamName", value: e.target.value }))
-                  }
-                  placeholder="e.g. Apex Protocol"
-                  className={`w-full rounded-xl bg-white/5 border px-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none transition-colors ${
-                    errors.teamName
-                      ? "border-red-500 focus:ring-1 focus:ring-red-500"
-                      : "border-white/10 focus:border-red-500/60"
-                  }`}
-                />
-                {errors.teamName && (
-                  <p className="flex items-center gap-1.5 text-xs text-red-400 font-mono">
-                    <AlertCircle className="h-3.5 w-3.5" />
-                    <span>{errors.teamName}</span>
-                  </p>
-                )}
-              </div>
-
-              {/* Team Tag */}
-              <div className="space-y-1.5">
-                <label className="block text-xs font-mono font-bold uppercase tracking-wider text-zinc-300">
-                  Tag (2–5 Chars) <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  maxLength={5}
-                  value={formData.teamTag}
-                  onChange={(e) =>
-                    dispatch(updateField({ field: "teamTag", value: e.target.value.toUpperCase() }))
-                  }
-                  placeholder="e.g. APX"
-                  className={`w-full rounded-xl bg-white/5 border px-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none uppercase font-mono transition-colors ${
-                    errors.teamTag
-                      ? "border-red-500 focus:ring-1 focus:ring-red-500"
-                      : "border-white/10 focus:border-red-500/60"
-                  }`}
-                />
-                {errors.teamTag && (
-                  <p className="flex items-center gap-1.5 text-xs text-red-400 font-mono">
-                    <AlertCircle className="h-3.5 w-3.5" />
-                    <span>{errors.teamTag}</span>
-                  </p>
-                )}
-              </div>
-            </div>
-
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {/* Game Discipline */}
-              <div className="space-y-1.5">
+              {/* Entry Format */}
+              <div className="space-y-2">
                 <label className="block text-xs font-mono font-bold uppercase tracking-wider text-zinc-300">
-                  Tournament Discipline
+                  Participation Format
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => dispatch(updateField({ field: "entryType", value: "solo" }))}
+                    className={`p-3.5 rounded-xl border text-xs font-bold font-mono uppercase transition-all flex flex-col items-center gap-1 ${
+                      isSolo
+                        ? "bg-red-600/20 border-red-500 text-white shadow-[0_0_15px_rgba(239,68,68,0.3)]"
+                        : "bg-white/5 border-white/10 text-zinc-400 hover:text-white"
+                    }`}
+                  >
+                    <User className="h-4 w-4" />
+                    <span>Solo Queue</span>
+                    <span className="text-[10px] text-zinc-400 font-normal">Balanced Team</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => dispatch(updateField({ field: "entryType", value: "team" }))}
+                    className={`p-3.5 rounded-xl border text-xs font-bold font-mono uppercase transition-all flex flex-col items-center gap-1 ${
+                      !isSolo
+                        ? "bg-red-600/20 border-red-500 text-white shadow-[0_0_15px_rgba(239,68,68,0.3)]"
+                        : "bg-white/5 border-white/10 text-zinc-400 hover:text-white"
+                    }`}
+                  >
+                    <Users className="h-4 w-4" />
+                    <span>Full Squad</span>
+                    <span className="text-[10px] text-zinc-400 font-normal">5 Players</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Membership Type */}
+              <div className="space-y-2">
+                <label className="block text-xs font-mono font-bold uppercase tracking-wider text-zinc-300">
+                  Eligibility Verification
                 </label>
                 <select
-                  value={formData.gameDiscipline}
+                  value={formData.membershipType}
                   onChange={(e) =>
-                    dispatch(updateField({ field: "gameDiscipline", value: e.target.value }))
+                    dispatch(
+                      updateField({
+                        field: "membershipType",
+                        value: e.target.value as "paav_gang_silver" | "youtube_member",
+                      })
+                    )
                   }
-                  className="w-full rounded-xl bg-[#121217] border border-white/10 px-4 py-3 text-sm text-white focus:outline-none focus:border-red-500/60"
+                  className="w-full rounded-xl bg-[#121217] border border-white/10 px-4 py-3.5 text-xs text-white focus:outline-none focus:border-red-500/60"
                 >
-                  <option value="Tactical FPS League">Tactical FPS Championship League</option>
-                  <option value="Challenger Open Division">Challenger Open Division</option>
+                  <option value="paav_gang_silver">Paav Gang Member (Silver Role on Discord)</option>
+                  <option value="youtube_member">YouTube Channel Member</option>
                 </select>
-              </div>
-
-              {/* Region */}
-              <div className="space-y-1.5">
-                <label className="block text-xs font-mono font-bold uppercase tracking-wider text-zinc-300">
-                  Region
-                </label>
-                <input
-                  type="text"
-                  disabled
-                  value={formData.region}
-                  className="w-full rounded-xl bg-white/5 border border-white/5 px-4 py-3 text-sm text-zinc-400 cursor-not-allowed font-mono"
-                />
+                <span className="text-[10px] font-mono text-zinc-400 block">
+                  * Must be verified in Discord server prior to match day.
+                </span>
               </div>
             </div>
           </div>
 
-          {/* Section 2: Team Leader Contact */}
+          {/* Section 1: Team / Player Profile */}
+          {!isSolo && (
+            <div className="rounded-2xl border border-white/10 bg-[#0e0e12] p-6 sm:p-8 space-y-6">
+              <div className="flex items-center gap-2 border-b border-white/5 pb-4">
+                <Trophy className="h-5 w-5 text-red-500" />
+                <h2 className="text-lg font-bold uppercase text-white font-sans tracking-wide">
+                  2. Squad Profile
+                </h2>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                <div className="sm:col-span-2 space-y-1.5">
+                  <label className="block text-xs font-mono font-bold uppercase tracking-wider text-zinc-300">
+                    Team Name <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.teamName}
+                    onChange={(e) =>
+                      dispatch(updateField({ field: "teamName", value: e.target.value }))
+                    }
+                    placeholder="e.g. Pallu ke Lallu or Team OG Irons"
+                    className={`w-full rounded-xl bg-white/5 border px-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none ${
+                      errors.teamName ? "border-red-500" : "border-white/10 focus:border-red-500/60"
+                    }`}
+                  />
+                  {errors.teamName && (
+                    <p className="text-xs text-red-400 font-mono mt-1">{errors.teamName}</p>
+                  )}
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-mono font-bold uppercase tracking-wider text-zinc-300">
+                    Tag (2–5 Chars) <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    maxLength={5}
+                    value={formData.teamTag}
+                    onChange={(e) =>
+                      dispatch(
+                        updateField({ field: "teamTag", value: e.target.value.toUpperCase() })
+                      )
+                    }
+                    placeholder="e.g. PKL"
+                    className={`w-full rounded-xl bg-white/5 border px-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none uppercase font-mono ${
+                      errors.teamTag ? "border-red-500" : "border-white/10 focus:border-red-500/60"
+                    }`}
+                  />
+                  {errors.teamTag && (
+                    <p className="text-xs text-red-400 font-mono mt-1">{errors.teamTag}</p>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Section 2: Contact Information */}
           <div className="rounded-2xl border border-white/10 bg-[#0e0e12] p-6 sm:p-8 space-y-6">
             <div className="flex items-center gap-2 border-b border-white/5 pb-4">
               <Users className="h-5 w-5 text-red-500" />
               <h2 className="text-lg font-bold uppercase text-white font-sans tracking-wide">
-                2. Team Leader & Contact
+                {isSolo ? "2. Player Contact Info" : "3. Captain / Contact Info"}
               </h2>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {/* Leader Full Name */}
               <div className="space-y-1.5">
                 <label className="block text-xs font-mono font-bold uppercase tracking-wider text-zinc-300">
-                  Team Leader / Captain Name <span className="text-red-500">*</span>
+                  {isSolo ? "Player Full Name" : "Team Captain Name"} <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
@@ -277,22 +352,36 @@ export default function RegistrationClient() {
                   onChange={(e) =>
                     dispatch(updateField({ field: "teamLeaderName", value: e.target.value }))
                   }
-                  placeholder="e.g. Alex Mercer"
-                  className={`w-full rounded-xl bg-white/5 border px-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none transition-colors ${
-                    errors.teamLeaderName
-                      ? "border-red-500 focus:ring-1 focus:ring-red-500"
-                      : "border-white/10 focus:border-red-500/60"
+                  placeholder="e.g. Ayush or Agent Name"
+                  className={`w-full rounded-xl bg-white/5 border px-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none ${
+                    errors.teamLeaderName ? "border-red-500" : "border-white/10 focus:border-red-500/60"
                   }`}
                 />
                 {errors.teamLeaderName && (
-                  <p className="flex items-center gap-1.5 text-xs text-red-400 font-mono">
-                    <AlertCircle className="h-3.5 w-3.5" />
-                    <span>{errors.teamLeaderName}</span>
-                  </p>
+                  <p className="text-xs text-red-400 font-mono mt-1">{errors.teamLeaderName}</p>
                 )}
               </div>
 
-              {/* Email Address */}
+              <div className="space-y-1.5">
+                <label className="block text-xs font-mono font-bold uppercase tracking-wider text-zinc-300">
+                  Discord Username <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  value={formData.discordId}
+                  onChange={(e) =>
+                    dispatch(updateField({ field: "discordId", value: e.target.value }))
+                  }
+                  placeholder="e.g. elitex_kd or ayush#0000"
+                  className={`w-full rounded-xl bg-white/5 border px-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none ${
+                    errors.discordId ? "border-red-500" : "border-white/10 focus:border-red-500/60"
+                  }`}
+                />
+                {errors.discordId && (
+                  <p className="text-xs text-red-400 font-mono mt-1">{errors.discordId}</p>
+                )}
+              </div>
+
               <div className="space-y-1.5">
                 <label className="block text-xs font-mono font-bold uppercase tracking-wider text-zinc-300">
                   Email Address <span className="text-red-500">*</span>
@@ -303,25 +392,19 @@ export default function RegistrationClient() {
                   onChange={(e) =>
                     dispatch(updateField({ field: "email", value: e.target.value }))
                   }
-                  placeholder="captain@example.com"
-                  className={`w-full rounded-xl bg-white/5 border px-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none transition-colors ${
-                    errors.email
-                      ? "border-red-500 focus:ring-1 focus:ring-red-500"
-                      : "border-white/10 focus:border-red-500/60"
+                  placeholder="agent@example.com"
+                  className={`w-full rounded-xl bg-white/5 border px-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none ${
+                    errors.email ? "border-red-500" : "border-white/10 focus:border-red-500/60"
                   }`}
                 />
                 {errors.email && (
-                  <p className="flex items-center gap-1.5 text-xs text-red-400 font-mono">
-                    <AlertCircle className="h-3.5 w-3.5" />
-                    <span>{errors.email}</span>
-                  </p>
+                  <p className="text-xs text-red-400 font-mono mt-1">{errors.email}</p>
                 )}
               </div>
 
-              {/* Contact Number */}
               <div className="space-y-1.5">
                 <label className="block text-xs font-mono font-bold uppercase tracking-wider text-zinc-300">
-                  Contact Phone Number <span className="text-red-500">*</span>
+                  WhatsApp / Phone Number <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="tel"
@@ -330,57 +413,33 @@ export default function RegistrationClient() {
                     dispatch(updateField({ field: "contactNumber", value: e.target.value }))
                   }
                   placeholder="+91 98765 43210"
-                  className={`w-full rounded-xl bg-white/5 border px-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none transition-colors ${
-                    errors.contactNumber
-                      ? "border-red-500 focus:ring-1 focus:ring-red-500"
-                      : "border-white/10 focus:border-red-500/60"
+                  className={`w-full rounded-xl bg-white/5 border px-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none ${
+                    errors.contactNumber ? "border-red-500" : "border-white/10 focus:border-red-500/60"
                   }`}
                 />
                 {errors.contactNumber && (
-                  <p className="flex items-center gap-1.5 text-xs text-red-400 font-mono">
-                    <AlertCircle className="h-3.5 w-3.5" />
-                    <span>{errors.contactNumber}</span>
-                  </p>
+                  <p className="text-xs text-red-400 font-mono mt-1">{errors.contactNumber}</p>
                 )}
-              </div>
-
-              {/* Discord ID (Optional) */}
-              <div className="space-y-1.5">
-                <div className="flex items-center justify-between">
-                  <label className="block text-xs font-mono font-bold uppercase tracking-wider text-zinc-300">
-                    Discord Username
-                  </label>
-                  <span className="text-[10px] font-mono text-zinc-500 uppercase">Optional</span>
-                </div>
-                <input
-                  type="text"
-                  value={formData.discordId}
-                  onChange={(e) =>
-                    dispatch(updateField({ field: "discordId", value: e.target.value }))
-                  }
-                  placeholder="username#0000 or @username"
-                  className="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-red-500/60"
-                />
               </div>
             </div>
           </div>
 
-          {/* Section 3: Player Roster */}
+          {/* Section 3: Valorant Roster / Solo Profile */}
           <div className="rounded-2xl border border-white/10 bg-[#0e0e12] p-6 sm:p-8 space-y-6">
             <div className="flex items-center justify-between border-b border-white/5 pb-4">
               <div className="flex items-center gap-2">
                 <Users className="h-5 w-5 text-red-500" />
                 <h2 className="text-lg font-bold uppercase text-white font-sans tracking-wide">
-                  3. Team Roster (5 Starters Mandatory)
+                  {isSolo ? "3. Valorant Agent Profile" : "4. Team Lineup (5 Starters Mandatory)"}
                 </h2>
               </div>
               <span className="text-xs font-mono text-zinc-400">
-                {formData.roster.length} Players Listed
+                {isSolo ? "Solo Queue Entry" : `${formData.roster.length} Players Listed`}
               </span>
             </div>
 
             <div className="space-y-4">
-              {formData.roster.map((player, idx) => {
+              {(isSolo ? [formData.roster[0]] : formData.roster).map((player, idx) => {
                 const isStarter = idx < 5;
                 const nameErr = errors[`roster_${idx}_fullName`];
                 const ignErr = errors[`roster_${idx}_inGameId`];
@@ -396,16 +455,20 @@ export default function RegistrationClient() {
                           {idx + 1}
                         </span>
                         <span className="text-xs font-bold uppercase tracking-wider text-white">
-                          {isStarter ? `Starter Slot ${idx + 1}` : "Substitute Slot"}
+                          {isSolo
+                            ? "Solo Participant"
+                            : isStarter
+                            ? `Starter Slot ${idx + 1}`
+                            : "Substitute Slot"}
                         </span>
-                        {player.isCaptain && (
+                        {!isSolo && player.isCaptain && (
                           <Badge variant="amber" size="sm">
                             Captain
                           </Badge>
                         )}
                       </div>
 
-                      {!isStarter && (
+                      {!isSolo && !isStarter && (
                         <button
                           type="button"
                           onClick={() => dispatch(removeSubstitute(idx))}
@@ -417,7 +480,7 @@ export default function RegistrationClient() {
                       )}
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
                       {/* Full Name */}
                       <div>
                         <input
@@ -432,7 +495,7 @@ export default function RegistrationClient() {
                               })
                             )
                           }
-                          placeholder="Player Full Name *"
+                          placeholder="Player Name *"
                           className={`w-full rounded-lg bg-white/5 border px-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none ${
                             nameErr ? "border-red-500" : "border-white/10 focus:border-red-500/60"
                           }`}
@@ -444,7 +507,7 @@ export default function RegistrationClient() {
                         )}
                       </div>
 
-                      {/* In-Game Name / ID */}
+                      {/* Riot ID & Tag */}
                       <div>
                         <input
                           type="text"
@@ -458,7 +521,7 @@ export default function RegistrationClient() {
                               })
                             )
                           }
-                          placeholder="In-Game Tag / Riot ID *"
+                          placeholder="Riot ID#Tag (e.g. Agent#PAAV) *"
                           className={`w-full rounded-lg bg-white/5 border px-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none font-mono ${
                             ignErr ? "border-red-500" : "border-white/10 focus:border-red-500/60"
                           }`}
@@ -470,7 +533,30 @@ export default function RegistrationClient() {
                         )}
                       </div>
 
-                      {/* Role Selector */}
+                      {/* Rank Selector */}
+                      <div>
+                        <select
+                          value={player.currentRank}
+                          onChange={(e) =>
+                            dispatch(
+                              updateRosterPlayer({
+                                index: idx,
+                                field: "currentRank",
+                                value: e.target.value,
+                              })
+                            )
+                          }
+                          className="w-full rounded-lg bg-[#121217] border border-white/10 px-3 py-2 text-xs text-white focus:outline-none focus:border-red-500/60 font-mono"
+                        >
+                          {VALORANT_RANKS.map((r) => (
+                            <option key={r} value={r}>
+                              Rank: {r}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+
+                      {/* Agent Role */}
                       <div>
                         <select
                           value={player.role}
@@ -485,11 +571,11 @@ export default function RegistrationClient() {
                           }
                           className="w-full rounded-lg bg-[#121217] border border-white/10 px-3 py-2 text-xs text-white focus:outline-none focus:border-red-500/60"
                         >
-                          <option value="Duelist / Fragger">Duelist / Fragger</option>
-                          <option value="Initiator / Flex">Initiator / Flex</option>
-                          <option value="Controller / Support">Controller / Support</option>
-                          <option value="Sentinel / Anchor">Sentinel / Anchor</option>
-                          <option value="Substitute">Substitute</option>
+                          {AGENT_ROLES.map((role) => (
+                            <option key={role} value={role}>
+                              Role: {role}
+                            </option>
+                          ))}
                         </select>
                       </div>
                     </div>
@@ -498,7 +584,7 @@ export default function RegistrationClient() {
               })}
             </div>
 
-            {formData.roster.length < 7 && (
+            {!isSolo && formData.roster.length < 7 && (
               <button
                 type="button"
                 onClick={() => dispatch(addSubstitute())}
@@ -523,11 +609,10 @@ export default function RegistrationClient() {
               />
               <div className="space-y-1">
                 <span className="text-xs font-bold text-white block">
-                  I agree to the PAAV Esports Tournament Regulations & Anti-Cheat Code <span className="text-red-500">*</span>
+                  I agree to the Paav Esports Valorant Tournament Regulations & Chill Mindset Code <span className="text-red-500">*</span>
                 </span>
                 <p className="text-[11px] text-zinc-400 leading-relaxed">
-                  Our team confirms that all roster members will abide by fair-play standards,
-                  referee rulings, and mandatory server screen capture verification when requested.
+                  I confirm that I am an active Paav Gang (Silver) or YouTube member, will join Discord Paav VC for matches, and will maintain good sportsmanship throughout the tournament.
                 </p>
               </div>
             </label>
@@ -590,7 +675,7 @@ export default function RegistrationClient() {
                 Roster Receipt Generated
               </h3>
               <p className="text-xs text-zinc-400">
-                Your roster has passed all frontend validation checks.
+                Your registration has passed all frontend validation checks.
               </p>
             </div>
 
@@ -601,26 +686,34 @@ export default function RegistrationClient() {
                 <span className="text-emerald-400 font-bold">{receipt.registrationCode}</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-zinc-500">Team:</span>
-                <span className="text-white font-bold">
-                  {receipt.teamName} [{receipt.teamTag}]
+                <span className="text-zinc-500">Format:</span>
+                <span className="text-white font-bold uppercase">{receipt.entryType} Entry</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-zinc-500">Eligibility:</span>
+                <span className="text-amber-400">
+                  {receipt.membershipType === "paav_gang_silver"
+                    ? "Paav Gang (Silver)"
+                    : "YouTube Member"}
                 </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-zinc-500">Captain:</span>
-                <span className="text-white">{receipt.teamLeaderName}</span>
+                <span className="text-zinc-500">{receipt.entryType === "solo" ? "Player:" : "Team:"}</span>
+                <span className="text-white font-bold">
+                  {receipt.teamName} {receipt.teamTag ? `[${receipt.teamTag}]` : ""}
+                </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-zinc-500">Contact Email:</span>
-                <span className="text-white">{receipt.email}</span>
+                <span className="text-zinc-500">Discord ID:</span>
+                <span className="text-white">{receipt.discordId}</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-zinc-500">Discipline:</span>
-                <span className="text-white">{receipt.gameDiscipline}</span>
+                <span className="text-zinc-500">Riot ID / Ign:</span>
+                <span className="text-red-400">{receipt.roster[0]?.inGameId}</span>
               </div>
               <div className="flex items-center justify-between pt-2 border-t border-white/10">
-                <span className="text-zinc-500">Roster Strength:</span>
-                <span className="text-white">{receipt.roster.filter(r => r.fullName).length} Players</span>
+                <span className="text-zinc-500">Valorant Rank:</span>
+                <span className="text-emerald-400">{receipt.roster[0]?.currentRank}</span>
               </div>
             </div>
 

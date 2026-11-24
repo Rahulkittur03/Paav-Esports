@@ -34,8 +34,9 @@ export default function HeroSection() {
           {/* Subtitle */}
           <p className="mt-8 max-w-2xl text-base sm:text-xl text-zinc-300 font-normal leading-relaxed">
             Welcome to <strong className="text-white font-semibold">{SITE_CONFIG.name}</strong>, the
-            epicenter of grassroots competitive gaming. Relive five monumental seasons of tournament
-            history and forge your squad&apos;s legacy in our upcoming season.
+            official competitive Valorant showdown of the{" "}
+            <strong className="text-white font-semibold">Paav Gang</strong> community. Relive five
+            seasons of iconic clutches, marathon overtimes, and claim your spot in the next FaceOff.
           </p>
 
           {/* Action CTAs */}

@@ -1,12 +1,33 @@
+export type ValorantRank =
+  | "Iron"
+  | "Bronze"
+  | "Silver"
+  | "Gold"
+  | "Platinum"
+  | "Diamond"
+  | "Ascendant"
+  | "Immortal"
+  | "Radiant";
+
+export type AgentRole =
+  | "Duelist"
+  | "Initiator"
+  | "Controller"
+  | "Sentinel"
+  | "Substitute";
+
 export interface RosterPlayer {
   id: string;
   fullName: string;
   inGameId: string;
-  role: "Duelist / Fragger" | "Controller / Support" | "Initiator / Flex" | "Sentinel / Anchor" | "Substitute";
+  currentRank: ValorantRank;
+  role: AgentRole;
   isCaptain?: boolean;
 }
 
 export interface RegistrationFormData {
+  entryType: "solo" | "team";
+  membershipType: "paav_gang_silver" | "youtube_member";
   teamName: string;
   teamTag: string;
   teamLeaderName: string;
@@ -26,6 +47,8 @@ export interface RegistrationErrors {
 export interface DemoSubmissionReceipt {
   registrationCode: string;
   submittedAt: string;
+  entryType: "solo" | "team";
+  membershipType: "paav_gang_silver" | "youtube_member";
   teamName: string;
   teamTag: string;
   teamLeaderName: string;
