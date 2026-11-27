@@ -4,7 +4,6 @@ import "./globals.css";
 import ReduxProvider from "@/store/ReduxProvider";
 import Navbar from "@/components/Common/Navbar";
 import Footer from "@/components/Common/Footer";
-import CursorGlow from "@/components/ui/CursorGlow";
 import { Toaster } from "sonner";
 import { SITE_CONFIG } from "@/utils/config";
 
@@ -22,7 +21,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
-  themeColor: "#080808",
+  themeColor: "#0A0C0F",
 };
 
 export const metadata: Metadata = {
@@ -56,29 +55,23 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased dark`}
     >
-      <body className="min-h-full flex flex-col bg-[#080808] text-zinc-100 selection:bg-red-600 selection:text-white">
+      <body className="min-h-full flex flex-col bg-[#0A0C0F] text-[#F4F5F7] selection:bg-[#FF4655] selection:text-white">
         <ReduxProvider>
-          {/* Subtle cursor ambient glow */}
-          <CursorGlow />
-
-          {/* Navigation */}
           <Navbar />
 
-          {/* Main page content */}
           <main className="flex-1 flex flex-col">{children}</main>
 
-          {/* Footer */}
           <Footer />
 
-          {/* Modern toast notifications */}
           <Toaster
             position="top-right"
             theme="dark"
             toastOptions={{
               style: {
-                background: "#0f0f11",
-                border: "1px solid rgba(255, 255, 255, 0.15)",
-                color: "#ffffff",
+                background: "#11141A",
+                border: "1px solid rgba(255, 255, 255, 0.14)",
+                borderRadius: "4px",
+                color: "#F4F5F7",
               },
             }}
           />

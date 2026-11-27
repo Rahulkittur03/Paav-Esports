@@ -3,8 +3,15 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, ChevronDown, Flame } from "lucide-react";
-import { ROUTE_HOME, ROUTE_SEASONS, ROUTE_ABOUT, ROUTE_REGISTER, ROUTE_SEASON_DETAIL } from "@/utils/routes";
+import { Menu, ChevronDown, ArrowUpRight } from "lucide-react";
+import { ValorantSparkIcon } from "@/components/ui/ValorantIcons";
+import {
+  ROUTE_HOME,
+  ROUTE_SEASONS,
+  ROUTE_ABOUT,
+  ROUTE_REGISTER,
+  ROUTE_SEASON_DETAIL,
+} from "@/utils/routes";
 import { SITE_CONFIG } from "@/utils/config";
 import { seasons } from "@/data/seasons";
 import MobileMenu from "./MobileMenu";
@@ -17,7 +24,7 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      setIsScrolled(window.scrollY > 12);
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -27,43 +34,41 @@ export default function Navbar() {
   return (
     <>
       <header
-        className={`sticky top-0 z-40 w-full transition-all duration-300 ${
+        className={`sticky top-0 z-40 w-full transition-colors duration-200 border-b ${
           isScrolled
-            ? "bg-[#080808]/90 backdrop-blur-md border-b border-white/10 shadow-lg shadow-black/50 py-3"
-            : "bg-transparent border-b border-white/5 py-4"
+            ? "bg-[#0A0C0F]/95 backdrop-blur-md border-white/12"
+            : "bg-[#0A0C0F]/85 backdrop-blur-sm border-white/8"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between">
-            {/* Brand Logo */}
+          <div className="flex h-16 items-center justify-between">
+            {/* Brand Mark */}
             <Link
               href={ROUTE_HOME}
               className="flex items-center gap-3 group focus:outline-none"
               aria-label="PAAV Esports Home"
             >
-              <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-red-500 to-red-700 font-mono font-black text-white shadow-[0_0_15px_rgba(239,68,68,0.4)] group-hover:shadow-[0_0_22px_rgba(239,68,68,0.7)] transition-all">
-                P
-                <div className="absolute inset-0 rounded-xl border border-white/20" />
+              <div className="flex h-9 w-9 items-center justify-center rounded-sm bg-[#FF4655] text-white transition-colors duration-300 group-hover:bg-[#E03846]">
+                <ValorantSparkIcon className="h-5 w-5" />
               </div>
-              <div className="flex flex-col">
-                <span className="font-sans text-xl font-extrabold tracking-wider text-white uppercase group-hover:text-red-400 transition-colors">
+              <div className="flex flex-col leading-none">
+                <span className="font-sans text-lg font-black tracking-wider text-[#F4F5F7] uppercase">
                   {SITE_CONFIG.name}
                 </span>
-                <span className="text-[10px] font-mono tracking-widest text-zinc-400 uppercase">
-                  Competitive Circuit
+                <span className="mt-0.5 text-[10px] font-mono tracking-[0.2em] text-zinc-400 uppercase">
+                  Valorant Circuit
                 </span>
               </div>
             </Link>
 
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center gap-1.5" aria-label="Main Navigation">
-              {/* Home */}
+            <nav className="hidden md:flex items-center gap-1" aria-label="Main Navigation">
               <Link
                 href={ROUTE_HOME}
-                className={`px-4 py-2 rounded-lg text-sm font-semibold tracking-wide transition-all ${
+                className={`px-3.5 py-2 text-xs font-bold uppercase tracking-wider transition-colors border-b-2 ${
                   pathname === ROUTE_HOME
-                    ? "text-white bg-white/10"
-                    : "text-zinc-300 hover:text-white hover:bg-white/5"
+                    ? "text-[#F4F5F7] border-[#FF4655]"
+                    : "text-zinc-400 border-transparent hover:text-[#F4F5F7]"
                 }`}
               >
                 Home
@@ -77,40 +82,40 @@ export default function Navbar() {
               >
                 <Link
                   href={ROUTE_SEASONS}
-                  className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold tracking-wide transition-all ${
+                  className={`inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold uppercase tracking-wider transition-colors border-b-2 ${
                     pathname.startsWith(ROUTE_SEASONS)
-                      ? "text-white bg-white/10"
-                      : "text-zinc-300 hover:text-white hover:bg-white/5"
+                      ? "text-[#F4F5F7] border-[#FF4655]"
+                      : "text-zinc-400 border-transparent hover:text-[#F4F5F7]"
                   }`}
                 >
                   <span>Seasons</span>
-                  <ChevronDown className="h-4 w-4 text-zinc-400 transition-transform group-hover:rotate-180" />
+                  <ChevronDown
+                    className={`h-3.5 w-3.5 transition-transform ${
+                      seasonsDropdownOpen ? "rotate-180 text-[#FF4655]" : ""
+                    }`}
+                  />
                 </Link>
 
-                {/* Dropdown Menu */}
                 {seasonsDropdownOpen && (
-                  <div className="absolute top-full left-0 w-64 pt-2 z-50">
-                    <div className="rounded-xl border border-white/10 bg-[#0c0c0e]/95 backdrop-blur-xl p-2 shadow-2xl shadow-black/80">
-                      <div className="px-3 py-1.5 text-[10px] font-mono uppercase tracking-widest text-zinc-500 border-b border-white/5 mb-1">
-                        Historical Archives
-                      </div>
+                  <div className="absolute top-full left-0 w-64 pt-1 z-50">
+                    <div className="rounded-sm border border-white/12 bg-[#11141A] p-1.5 shadow-2xl shadow-black/80">
                       <Link
                         href={ROUTE_SEASONS}
-                        className="flex items-center justify-between px-3 py-2 text-xs font-bold text-zinc-200 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
+                        className="flex items-center justify-between px-3 py-2 text-xs font-bold uppercase tracking-wider text-[#F4F5F7] hover:bg-white/5 rounded-sm transition-colors"
                       >
                         <span>All Seasons (1–5)</span>
-                        <span className="text-[10px] font-mono text-zinc-500">5 Archives</span>
+                        <span className="text-[10px] font-mono text-[#FF4655]">ARCHIVE</span>
                       </Link>
-                      <div className="my-1 border-t border-white/5" />
+                      <div className="my-1 border-t border-white/8" />
                       {seasons.map((season) => (
                         <Link
                           key={season.slug}
                           href={ROUTE_SEASON_DETAIL(season.slug)}
-                          className="flex items-center justify-between px-3 py-1.5 text-xs text-zinc-400 hover:text-red-400 hover:bg-white/5 rounded-lg transition-colors"
+                          className="flex items-center justify-between px-3 py-2 text-xs text-zinc-300 hover:text-[#F4F5F7] hover:bg-white/5 rounded-sm transition-colors"
                         >
-                          <span>{season.title}</span>
-                          <span className="text-[10px] font-mono text-zinc-500">
-                            S{season.number}
+                          <span className="truncate pr-2">{season.title}</span>
+                          <span className="text-[10px] font-mono text-zinc-500 shrink-0">
+                            S0{season.number}
                           </span>
                         </Link>
                       ))}
@@ -119,16 +124,15 @@ export default function Navbar() {
                 )}
               </div>
 
-              {/* About */}
               <Link
                 href={ROUTE_ABOUT}
-                className={`px-4 py-2 rounded-lg text-sm font-semibold tracking-wide transition-all ${
+                className={`px-3.5 py-2 text-xs font-bold uppercase tracking-wider transition-colors border-b-2 ${
                   pathname === ROUTE_ABOUT
-                    ? "text-white bg-white/10"
-                    : "text-zinc-300 hover:text-white hover:bg-white/5"
+                    ? "text-[#F4F5F7] border-[#FF4655]"
+                    : "text-zinc-400 border-transparent hover:text-[#F4F5F7]"
                 }`}
               >
-                About PAAV
+                About
               </Link>
             </nav>
 
@@ -136,10 +140,10 @@ export default function Navbar() {
             <div className="hidden md:flex items-center gap-3">
               <Link
                 href={ROUTE_REGISTER}
-                className="group relative inline-flex items-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-red-600 to-red-700 px-5 py-2.5 text-xs font-bold tracking-wider uppercase text-white shadow-[0_0_15px_rgba(239,68,68,0.4)] hover:shadow-[0_0_25px_rgba(239,68,68,0.7)] hover:brightness-110 transition-all active:scale-95"
+                className="inline-flex items-center gap-1.5 rounded-sm bg-[#FF4655] hover:bg-[#E03846] px-4 py-2 text-xs font-bold tracking-wider uppercase text-white transition-colors"
               >
-                <Flame className="h-4 w-4 text-amber-300 group-hover:scale-110 transition-transform" />
-                <span>Register for Season 6</span>
+                <span>Register S6</span>
+                <ArrowUpRight className="h-3.5 w-3.5" />
               </Link>
             </div>
 
@@ -148,17 +152,16 @@ export default function Navbar() {
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(true)}
-                className="rounded-lg border border-white/10 p-2 text-zinc-300 hover:bg-white/5 hover:text-white transition-colors"
+                className="rounded-sm border border-white/12 p-2 text-zinc-300 hover:bg-white/5 hover:text-white transition-colors"
                 aria-label="Open navigation menu"
               >
-                <Menu className="h-6 w-6" />
+                <Menu className="h-5 w-5" />
               </button>
             </div>
           </div>
         </div>
       </header>
 
-      {/* Accessible Mobile Drawer */}
       <MobileMenu isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
     </>
   );

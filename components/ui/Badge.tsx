@@ -12,35 +12,36 @@ export default function Badge({
   children,
   variant = "red",
   size = "md",
-  dot = true,
+  dot = false,
   className = "",
 }: BadgeProps) {
+  // Unified esports palette: crimson primary or clean neutral slate
   const variantStyles = {
-    red: "bg-red-500/10 text-red-400 border-red-500/30",
-    emerald: "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
-    amber: "bg-amber-500/10 text-amber-400 border-amber-500/30",
-    blue: "bg-blue-500/10 text-blue-400 border-blue-500/30",
-    purple: "bg-purple-500/10 text-purple-400 border-purple-500/30",
-    zinc: "bg-white/5 text-zinc-300 border-white/10",
+    red: "bg-[#FF4655]/12 text-[#FF4655] border-[#FF4655]/35",
+    emerald: "bg-[#FF4655]/12 text-[#FF4655] border-[#FF4655]/35",
+    amber: "bg-white/5 text-[#F4F5F7] border-white/15",
+    blue: "bg-white/5 text-zinc-300 border-white/15",
+    purple: "bg-white/5 text-zinc-300 border-white/15",
+    zinc: "bg-white/5 text-zinc-300 border-white/12",
   };
 
   const dotColors = {
-    red: "bg-red-400 shadow-[0_0_8px_#ef4444]",
-    emerald: "bg-emerald-400 shadow-[0_0_8px_#10b981]",
-    amber: "bg-amber-400 shadow-[0_0_8px_#f59e0b]",
-    blue: "bg-blue-400 shadow-[0_0_8px_#3b82f6]",
-    purple: "bg-purple-400 shadow-[0_0_8px_#a855f7]",
+    red: "bg-[#FF4655]",
+    emerald: "bg-[#FF4655]",
+    amber: "bg-[#F4F5F7]",
+    blue: "bg-zinc-400",
+    purple: "bg-zinc-400",
     zinc: "bg-zinc-400",
   };
 
   const sizeStyles = {
     sm: "px-2 py-0.5 text-[10px]",
-    md: "px-2.5 py-1 text-xs",
+    md: "px-2.5 py-1 text-[11px]",
   };
 
   return (
     <span
-      className={`inline-flex items-center gap-1.5 rounded-full border font-mono font-semibold tracking-wider uppercase backdrop-blur-sm ${variantStyles[variant]} ${sizeStyles[size]} ${className}`}
+      className={`inline-flex items-center gap-1.5 rounded-sm border font-mono font-semibold tracking-[0.12em] uppercase ${variantStyles[variant]} ${sizeStyles[size]} ${className}`}
     >
       {dot && <span className={`h-1.5 w-1.5 rounded-full ${dotColors[variant]}`} />}
       {children}

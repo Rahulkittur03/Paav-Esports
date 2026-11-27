@@ -16,7 +16,7 @@ const initialRoster: RosterPlayer[] = [
 ];
 
 const initialFormData: RegistrationFormData = {
-  entryType: "team",
+  entryType: "solo",
   membershipType: "paav_gang_silver",
   teamName: "",
   teamTag: "",

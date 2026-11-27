@@ -1,5 +1,6 @@
 import HeroSection from "@/components/home/HeroSection";
 import Marquee from "@/components/ui/Marquee";
+import MatchMediaSection from "@/components/home/MatchMediaSection";
 import AboutPreview from "@/components/home/AboutPreview";
 import SeasonArchiveSection from "@/components/home/SeasonArchiveSection";
 import UpcomingSeasonBanner from "@/components/home/UpcomingSeasonBanner";
@@ -19,19 +20,11 @@ export default function HomePage() {
 
   return (
     <>
-      {/* Hero Section */}
       <HeroSection />
-
-      {/* Infinite Accolades Marquee */}
       <Marquee items={tickerItems} />
-
-      {/* About PAAV Preview */}
-      <AboutPreview />
-
-      {/* Seasons 1-5 Archive Grid */}
+      <MatchMediaSection />
       <SeasonArchiveSection />
-
-      {/* Upcoming Season 6 Promotional Banner */}
+      <AboutPreview />
       <UpcomingSeasonBanner />
     </>
   );

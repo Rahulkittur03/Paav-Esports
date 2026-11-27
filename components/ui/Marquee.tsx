@@ -2,32 +2,37 @@ import React from "react";
 
 interface MarqueeProps {
   items: string[];
-  speed?: "normal" | "slow" | "fast";
   className?: string;
 }
 
 export default function Marquee({ items, className = "" }: MarqueeProps) {
-  // Double items for seamless infinite scroll
   const displayItems = [...items, ...items];
 
   return (
     <div
-      className={`relative w-full overflow-hidden border-y border-white/10 bg-zinc-950/80 py-3.5 backdrop-blur-sm ${className}`}
+      className={`relative w-full overflow-hidden border-y border-white/10 bg-[#11141A] flex items-center ${className}`}
       aria-label="Tournament Announcement Ticker"
     >
-      <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-[#080808] to-transparent z-10 pointer-events-none" />
-      <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-[#080808] to-transparent z-10 pointer-events-none" />
+      {/* Static Broadcast Tag */}
+      <div className="hidden sm:flex items-center gap-2 px-4 py-2.5 bg-[#FF4655] text-white font-mono text-[10px] font-bold uppercase tracking-[0.18em] shrink-0 z-20">
+        <span className="h-1.5 w-1.5 rounded-full bg-white" />
+        <span>Circuit Feed</span>
+      </div>
 
-      <div className="animate-marquee flex items-center gap-10 whitespace-nowrap">
-        {displayItems.map((item, idx) => (
-          <div key={idx} className="flex items-center gap-6">
-            <span className="flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-widest text-zinc-300">
-              <span className="h-1.5 w-1.5 rounded-full bg-red-500 shadow-[0_0_8px_#ef4444]" />
-              {item}
-            </span>
-            <span className="text-zinc-600 font-mono text-xs">{"///"}</span>
-          </div>
-        ))}
+      <div className="relative flex-1 overflow-hidden py-2.5">
+        <div className="absolute left-0 top-0 bottom-0 w-10 bg-gradient-to-r from-[#11141A] to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-10 bg-gradient-to-l from-[#11141A] to-transparent z-10 pointer-events-none" />
+
+        <div className="animate-marquee flex items-center gap-8 whitespace-nowrap">
+          {displayItems.map((item, idx) => (
+            <div key={idx} className="flex items-center gap-8">
+              <span className="flex items-center gap-2.5 text-[11px] font-mono font-semibold uppercase tracking-[0.14em] text-zinc-300">
+                <span className="h-1 w-1 bg-[#FF4655]" />
+                {item}
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
